@@ -26,16 +26,26 @@ var replayclickable = false;
 
 //sounds
 var volume = 30;
-var soundJump = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_wing.ogg");
-var soundScore = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_point.ogg");
-var soundHit = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_hit.mp3");
-var soundDie = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_die.mp3");
-var soundSwoosh = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_swooshing.ogg");
+var soundJump = new buzz.sound(["https://flappybillions.netlify.app/assets/sounds/sfx_wing.ogg", "https://flappybillions.netlify.app/assets/sounds/sfx_wing.mp3"]);
+var soundScore = new buzz.sound(["https://flappybillions.netlify.app/assets/sounds/sfx_point.ogg", "https://flappybillions.netlify.app/assets/sounds/sfx_point.mp3"]);
+var soundHit = new buzz.sound(["https://flappybillions.netlify.app/assets/sounds/sfx_hit.mp3", "https://flappybillions.netlify.app/assets/sounds/sfx_hit.ogg"]);
+var soundDie = new buzz.sound(["https://flappybillions.netlify.app/assets/sounds/sfx_die.mp3", "https://flappybillions.netlify.app/assets/sounds/sfx_die.ogg"]);
+var soundSwoosh = new buzz.sound(["https://flappybillions.netlify.app/assets/sounds/sfx_swooshing.ogg", "https://flappybillions.netlify.app/assets/sounds/sfx_swooshing.mp3"]);
 buzz.all().setVolume(volume);
 
 //loops
 var loopGameloop;
 var loopPipeloop;
+
+// Enable audio on first user interaction (required for mobile)
+function enableAudio() {
+   buzz.all().play();
+   buzz.all().stop();
+   document.removeEventListener('touchstart', enableAudio);
+   document.removeEventListener('click', enableAudio);
+}
+document.addEventListener('touchstart', enableAudio);
+document.addEventListener('click', enableAudio);
 
 $(document).ready(function() {
    if(window.location.search == "?debug")
