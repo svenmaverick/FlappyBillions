@@ -364,8 +364,14 @@ function playerDead()
    //mobile browsers don't support buzz bindOnce event
    if(isIncompatible.any())
    {
-      //skip right to showing score
-      showScore();
+      //play sounds without waiting for them to end, then show score
+      soundHit.play();
+      setTimeout(function() {
+         soundDie.play();
+      }, 300);
+      setTimeout(function() {
+         showScore();
+      }, 600);
    }
    else
    {
