@@ -25,13 +25,19 @@ var pipes = new Array();
 var replayclickable = false;
 
 //sounds
-var volume = 30;
-var soundJump = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_wing.ogg");
-var soundScore = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_point.ogg");
-var soundHit = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_hit.mp3");
-var soundDie = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_die.mp3");
-var soundSwoosh = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_swooshing.ogg");
-buzz.all().setVolume(volume);
+var volume = 0.3; // 0-1 range for HTML5 audio
+var soundJump = new Audio("https://flappybillions.netlify.app/assets/sounds/sfx_wing.ogg");
+var soundScore = new Audio("https://flappybillions.netlify.app/assets/sounds/sfx_point.ogg");
+var soundHit = new Audio("https://flappybillions.netlify.app/assets/sounds/sfx_hit.mp3");
+var soundDie = new Audio("https://flappybillions.netlify.app/assets/sounds/sfx_die.mp3");
+var soundSwoosh = new Audio("https://flappybillions.netlify.app/assets/sounds/sfx_swooshing.ogg");
+
+// Set volume for all audio elements
+soundJump.volume = volume;
+soundScore.volume = volume;
+soundHit.volume = volume;
+soundDie.volume = volume;
+soundSwoosh.volume = volume;
 
 //loops
 var loopGameloop;
@@ -86,7 +92,7 @@ function showSplash()
    $("#player").css({ y: 0, x: 0});
    updatePlayer($("#player"));
 
-   soundSwoosh.stop();
+   soundSwoosh.currentTime = 0;
    soundSwoosh.play();
 
    //clear out all the pipes if there are any
@@ -267,7 +273,7 @@ function playerJump()
 {
    velocity = jump;
    //play jump sound
-   soundJump.stop();
+   soundJump.currentTime = 0;
    soundJump.play();
 }
 
@@ -360,11 +366,17 @@ function playerDead()
    else
    {
       //play the hit sound (then the dead sound) and then show score
-      soundHit.play().bindOnce("ended", function() {
-         soundDie.play().bindOnce("ended", function() {
+      soundHit.currentTime = 0;
+      soundHit.play();
+      soundHit.addEventListener("ended", function onHitEnd() {
+         soundDie.currentTime = 0;
+         soundDie.play();
+         soundDie.addEventListener("ended", function onDieEnd() {
             showScore();
-         });
-      });
+            soundDie.removeEventListener("ended", onDieEnd);
+         }, { once: true });
+         soundHit.removeEventListener("ended", onHitEnd);
+      }, { once: true });
    }
 }
 
@@ -385,15 +397,15 @@ function showScore()
       setCookie("highscore", highscore, 999);
    }
 
-   //update the scoreboard
-   setSmallScore();
-   setHighScore();
-   var wonmedal = setMedal();
-
-   //SWOOSH!
-   soundSwoosh.stop();
+   //update thecurrentTime = 0;
    soundSwoosh.play();
 
+   //show the scoreboard
+   $("#scoreboard").css({ opacity: 0, transform: 'translate(-50%, -50%) translateY(20px)' });
+   $("#replay").css({ opacity: 0, transform: 'translate(-50%, 0) translateY(20px)' });
+   $("#scoreboard").transition({ opacity: 1, transform: 'translate(-50%, -50%) translateY(0)'}, 400, 'ease', function() {
+      //When the animation is done, animate in the replay button and SWOOSH!
+      soundSwoosh.currentTime = 0
    //show the scoreboard
    $("#scoreboard").css({ opacity: 0, transform: 'translate(-50%, -50%) translateY(20px)' });
    $("#replay").css({ opacity: 0, transform: 'translate(-50%, 0) translateY(20px)' });
@@ -422,7 +434,7 @@ $("#replay").click(function() {
    else
       replayclickable = false;
    //SWOOSH!
-   soundSwoosh.stop();
+   soundSwoosh.currentTime = 0;
    soundSwoosh.play();
 
    //fade out the scoreboard
@@ -439,7 +451,7 @@ function playerScore()
 {
    score += 1;
    //play score sound
-   soundScore.stop();
+   soundScore.currentTime = 0;
    soundScore.play();
    setBigScore();
 }
