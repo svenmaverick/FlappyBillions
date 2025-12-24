@@ -12,7 +12,7 @@ var gravity = 0.1; // original: 0.5
 var velocity = 1; // original: 1
 var position = 180;
 var rotation = 0;
-var jump = -3.5; // original
+var jump = -4.6; // original
 var flyArea = $("#flyarea").height();
 
 var score = 0;
