@@ -28,8 +28,8 @@ var replayclickable = false;
 var volume = 30;
 var soundJump = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_wing.ogg");
 var soundScore = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_point.ogg");
-var soundHit = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_hit.ogg");
-var soundDie = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_die.ogg");
+var soundHit = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_hit.mp3");
+var soundDie = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_die.mp3");
 var soundSwoosh = new buzz.sound("https://flappybillions.netlify.app/assets/sounds/sfx_swooshing.ogg");
 buzz.all().setVolume(volume);
 
