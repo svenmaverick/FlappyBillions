@@ -1,0 +1,4 @@
+[[headers]]
+for = "/**/*.ogg"
+[headers.values]
+Content-Type = "audio/ogg"
